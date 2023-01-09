@@ -1,0 +1,49 @@
+name: Publish to GitHub Pages
+run-name: Prepare deploy on $GITHUB_SHA
+
+# this action only builds ans pushes to the gh-pages branch
+# and the auto-generated script from github pages runs upon push to the gh-pages branch
+# which makes the last steps to publish to github pages
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Use NPM
+        uses: actions/setup-node@v3
+        with: 
+          node-version: 18
+
+      - name: Installing NPM dependencies
+        run: npm i
+
+      - name: Running NPM 'build' script
+        run: npm run build
+
+      - name: Initializing git repository in build output folder
+        working-directory: ./dist
+        run: |
+          git init
+          git config --local user.email "martin.heywang1@gmail.com"
+          git config --local user.name "github action bot"
+
+      - name: Adding changes
+        working-directory: ./dist
+        run: |
+          git checkout -B main
+          git add -A
+
+      - name: Committing changes
+        working-directory: ./dist
+        run: git commit -m "deploy on $GITHUB_SHA"
+
+      - name: Push
+        working-directory: ./dist
+        run: git push -f "https://MartinHeywang:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/MartinHeywang/jumping-kangaroos.git" main:gh-pages
