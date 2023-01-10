@@ -1,14 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
         <meta charset="UTF-8" />
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link rel="stylesheet" href="./src/scss/main.scss" />
-        <script type="module" src="/src/main.ts" defer></script>
+        <link rel="stylesheet" href="./src/scss/main.scss">
+        <script type="module" src="/src/ts/main.ts" defer></script>
 
         <title>Jumping Kangaroos</title>
     </head>
-    <body></body>
+    <body>
+        <section id="simulation" class="section simulation">
+            <canvas class="simulation__graphic"></canvas>
+            <div class="simulation__table"></div>
+        </section>
+        <section id="configuration" class="section configuration">
+            <div class="configuration__status">
+                <div>Informations sur la simulation&nbsp;:</div>
+                <span>s = 2</span>
+                <span>&Delta;t = 1</span>
+                <span>x<sub>1</sub>[n] = 1 + n</span>
+            </div>
+        </section>
+    </body>
 </html>
