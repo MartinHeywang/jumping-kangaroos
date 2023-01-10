@@ -4,8 +4,14 @@
     min-height: calc(100vh - 4rem);
 }
 
-.simulation__graphic {
+.simulation__graphic-wrapper {
     flex: 1;
+}
+
+.simulation__graphic {
+    // because otherwise, the canvas does not take the full height
+    // but instead leaves a small bottom margin
+    min-height: 100%;
 }
 
 .simulation__table {

@@ -5,14 +5,16 @@
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link rel="stylesheet" href="./src/scss/main.scss">
+        <link rel="stylesheet" href="./src/scss/main.scss" />
         <script type="module" src="/src/ts/main.ts" defer></script>
 
         <title>Jumping Kangaroos</title>
     </head>
     <body>
         <section id="simulation" class="section simulation">
-            <canvas class="simulation__graphic"></canvas>
+            <div class="simulation__graphic-wrapper">
+                <canvas class="simulation__graphic"></canvas>
+            </div>
             <div class="simulation__table"></div>
         </section>
         <section id="configuration" class="section configuration">

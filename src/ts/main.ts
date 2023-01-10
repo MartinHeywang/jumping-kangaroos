@@ -1,3 +1,4 @@
-console.log("Hello, world!");
+import { initGraphSimulation } from "./graph";
 
-export default {};
+initGraphSimulation();
+window.addEventListener("resize", initGraphSimulation);
