@@ -45,15 +45,20 @@ function drawAxis() {
     const origin = { x: 0, y: 0 };
     const canvasOrigin = axisToCanvas(origin);
 
-    const axisWidth = 2;
+    const axisWidth = 1;
 
     // draw the actual axis
-    ctx.fillStyle = "#222";
-    ctx.fillRect(canvasOrigin.x, 0, axisWidth, ch);
-    ctx.fillRect(0, canvasOrigin.y, cw, axisWidth);
+    ctx.strokeStyle = "#222";
+    ctx.lineWidth = axisWidth;
+    ctx.beginPath();
+    ctx.moveTo(canvasOrigin.x, 0);
+    ctx.lineTo(canvasOrigin.x, ch);
+    ctx.moveTo(0, canvasOrigin.y);
+    ctx.lineTo(cw, canvasOrigin.y);
+    ctx.stroke();
 
     // draw the O for the origin
-    ctx.font = "20px sans-serif";
+    ctx.font = "12px 'Consolas'";
     ctx.textBaseline = "top";
     ctx.textAlign = "right";
 
@@ -63,16 +68,17 @@ function drawAxis() {
 
     // draw the grads
     const gradLength = 14;
-    const gradThickness = 1;
 
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
 
-    for (let x = Math.ceil(minX); x < maxX; x++) {
+    ctx.beginPath();
+    for (let x = Math.ceil(minX) + 1; x < maxX; x++) {
         if (x === 0) continue;
 
         const { x: canvasX } = axisToCanvas({ x });
-        ctx.fillRect(canvasX, canvasOrigin.y - gradLength / 2, gradThickness, gradLength);
+        ctx.moveTo(canvasX, canvasOrigin.y - gradLength / 2);
+        ctx.lineTo(canvasX, canvasOrigin.y + gradLength / 2);
 
         ctx.fillText(x.toString(), canvasX, canvasOrigin.y + gradLength / 2 + textOffset);
     }
@@ -80,14 +86,17 @@ function drawAxis() {
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
 
-    for (let y = Math.ceil(minY); y < maxY; y++) {
+    for (let y = Math.ceil(minY) + 1; y < maxY; y++) {
         if (y === 0) continue;
 
         const { y: canvasY } = axisToCanvas({ y });
-        ctx.fillRect(canvasOrigin.x - gradLength / 2, canvasY, gradLength, gradThickness);
+        ctx.moveTo(canvasOrigin.x - gradLength / 2, canvasY);
+        ctx.lineTo(canvasOrigin.x + gradLength / 2, canvasY);
 
         ctx.fillText(y.toString(), canvasOrigin.x - gradLength / 2 - textOffset, canvasY);
     }
+
+    ctx.stroke();
 }
 
 function computeKangarooPositions() {
@@ -113,7 +122,7 @@ function computeKangarooPositions() {
 function drawKangaroos() {
     if (!kangarooPositions) return;
 
-    const pointRadius = 8;
+    const pointRadius = 6;
     const lineAlpha = 0.6;
 
     const C0Color = "184, 134, 11";
