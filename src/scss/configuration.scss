@@ -23,6 +23,18 @@
     }
 }
 
+.config__status__title {
+    border: 2px solid transparent;
+}
+
+.config__status__title--lose {
+    border-color: red;
+}
+
+.config__status__title--win {
+    border-color: greenyellow;
+}
+
 .config__var {
     display: flex;
 }
