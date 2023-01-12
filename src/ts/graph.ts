@@ -1,6 +1,5 @@
-const positionsList = document.querySelector<HTMLUListElement>(
-    ".simul__positions-list"
-)!;
+import { state } from "./state";
+
 const canvas = document.querySelector<HTMLCanvasElement>(".simul__graphic")!;
 const ctx = canvas.getContext("2d")!;
 
@@ -9,26 +8,12 @@ let maxX = 15;
 let minY = -1;
 let maxY = 15;
 
-// quotient of d0 / d1
-const s = 56 / 23;
-
-let kangarooPositions: {
-    C0: { x: number }[];
-    C1: { x: number }[];
-};
-
-// the chased kangaroo's movement
-const C1 = (t: number) => 1 + t;
-
-export function initGraphSimulation() {
+export function render() {
     canvas.width = canvas.parentElement!.clientWidth;
     canvas.height = canvas.parentElement!.clientHeight;
 
-    computeKangarooPositions();
-    showPositionsInTable();
-
     // adjust graph visible domain
-    const allPositions = kangarooPositions.C0.concat(kangarooPositions.C1);
+    const allPositions = state.positions.C0.concat(state.positions.C1);
     minX =
         allPositions.reduce((previous, pos) => {
             return previous.x < pos.x ? previous : pos;
@@ -39,7 +24,7 @@ export function initGraphSimulation() {
         }).x + 1;
 
     minY = -1;
-    maxY = kangarooPositions.C0.length; // both C0 and C1 have the same number of positions
+    maxY = state.positions.C0.length; // both C0 and C1 have the same number of positions
 
     drawAxis();
     drawKangaroos();
@@ -106,28 +91,8 @@ function drawAxis() {
     ctx.stroke();
 }
 
-function computeKangarooPositions() {
-    // initial positions given with the problem
-    kangarooPositions = { C0: [{ x: 0 }], C1: [{ x: 1 }] };
-
-    const maxIteration = 15;
-
-    for (let t = 1; t <= maxIteration; t++) {
-        const isC0TooFar = kangarooPositions.C0[t - 1].x > kangarooPositions.C1[t - 1].x;
-
-        kangarooPositions.C0[t] = {
-            x: !isC0TooFar
-                ? (kangarooPositions.C0[t - 1]?.x ?? 0) + s
-                : (kangarooPositions.C0[t - 1]?.x ?? 0) - s,
-        };
-        kangarooPositions.C1[t] = { x: C1(t) };
-
-        if (kangarooPositions.C0[t].x === kangarooPositions.C1[t].x) break;
-    }
-}
-
 function drawKangaroos() {
-    if (!kangarooPositions) return;
+    if (!state.positions) return;
 
     const pointRadius = 6;
     const lineAlpha = 0.6;
@@ -139,7 +104,7 @@ function drawKangaroos() {
     ctx.setLineDash([5]);
 
     ctx.beginPath();
-    kangarooPositions.C1.forEach((pos, t) => {
+    state.positions.C1.forEach((pos, t) => {
         const { x: canvasX, y: canvasY } = axisToCanvas({ x: pos.x, y: t });
 
         ctx.arc(canvasX, canvasY, pointRadius, 0, Math.PI * 2);
@@ -149,14 +114,14 @@ function drawKangaroos() {
 
     ctx.beginPath();
     ctx.strokeStyle = `rgba(${C1Color}, ${lineAlpha})`;
-    kangarooPositions.C1.forEach((pos, t) => {
+    state.positions.C1.forEach((pos, t) => {
         const { x: canvasX, y: canvasY } = axisToCanvas({ x: pos.x, y: t });
         ctx.lineTo(canvasX, canvasY);
     });
     ctx.stroke();
 
     ctx.fillStyle = `rgb(${C0Color})`;
-    kangarooPositions.C0.forEach((pos, t) => {
+    state.positions.C0.forEach((pos, t) => {
         ctx.beginPath();
         const { x: canvasX, y: canvasY } = axisToCanvas({ x: pos.x, y: t });
         ctx.arc(canvasX, canvasY, pointRadius, 0, Math.PI * 2);
@@ -165,27 +130,11 @@ function drawKangaroos() {
 
     ctx.beginPath();
     ctx.strokeStyle = `rgba(${C0Color}, ${lineAlpha})`;
-    kangarooPositions.C0.forEach((pos, t) => {
+    state.positions.C0.forEach((pos, t) => {
         const { x: canvasX, y: canvasY } = axisToCanvas({ x: pos.x, y: t });
         ctx.lineTo(canvasX, canvasY);
     });
     ctx.stroke();
-}
-
-function showPositionsInTable() {
-    positionsList.innerHTML = "";
-
-    for (let t = 0; t < kangarooPositions.C0.length; t++) {
-        const li = document.createElement("li");
-        li.classList.add("simul__position");
-
-        li.innerHTML = `
-            <span>t = ${t}&Delta;t</span
-            ><span>x<sub>0</sub> = ${kangarooPositions.C0[t].x.toFixed(3)}</span><span>x<sub>1</sub> = ${kangarooPositions.C1[t].x}</span>
-        `;
-
-        positionsList.appendChild(li);
-    }
 }
 
 function axisToCanvas(coords: { x?: number; y?: number }) {

@@ -1,9 +1,11 @@
 interface Config {
     s: number;
+
+    C1: (t: number) => number;
 }
 
 // default values
-export let config: Config = { s: 2 };
+export let config: Config = { s: 2, C1: (t) => 1 + t };
 
 type Listener = (config: Config) => void;
 const listeners: Listener[] = [];

@@ -1,10 +1,15 @@
-import { initGraphSimulation } from "./graph";
-import {addListener} from "./config";
+import * as config from "./config";
+import * as state from "./state";
 
-addListener((config) => {
-    console.log("config changed")
-    console.log(config);
-})
+import * as graph from "./graph";
+import * as table from "./table";
 
-initGraphSimulation();
-window.addEventListener("resize", initGraphSimulation);
+function update() {
+    state.update();
+
+    graph.render();
+    table.update();
+}
+
+update();
+config.addListener(update);
