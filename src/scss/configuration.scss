@@ -1,11 +1,11 @@
-.configuration {
+.config {
     min-height: 40vh;
 
     background-color: #333;
-    color: #d9d9D9;
+    color: #d9d9d9;
 }
 
-.configuration__status {
+.config__status {
     display: flex;
     align-items: center;
     gap: 1em;
@@ -16,4 +16,27 @@
     font-size: 1.2rem;
 
     background-color: #222;
+
+    &__title {
+        background-color: rgba(white, 0.05);
+        padding: 0.5em 1.5em;
+    }
+}
+
+.config__var {
+    display: flex;
+}
+
+.config__var-input {
+    max-width: 4em;
+
+    font: inherit;
+    color: inherit;
+
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 0;
+
+    &:focus {
+        outline: 1px solid;
+    }
 }

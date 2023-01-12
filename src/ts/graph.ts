@@ -1,4 +1,7 @@
-const canvas = document.querySelector<HTMLCanvasElement>(".simulation__graphic")!;
+const positionsList = document.querySelector<HTMLUListElement>(
+    ".simul__positions-list"
+)!;
+const canvas = document.querySelector<HTMLCanvasElement>(".simul__graphic")!;
 const ctx = canvas.getContext("2d")!;
 
 let minX = -1;
@@ -7,7 +10,7 @@ let minY = -1;
 let maxY = 15;
 
 // quotient of d0 / d1
-const s = 56/23;
+const s = 56 / 23;
 
 let kangarooPositions: {
     C0: { x: number }[];
@@ -22,15 +25,19 @@ export function initGraphSimulation() {
     canvas.height = canvas.parentElement!.clientHeight;
 
     computeKangarooPositions();
+    showPositionsInTable();
 
+    // adjust graph visible domain
     const allPositions = kangarooPositions.C0.concat(kangarooPositions.C1);
-    minX = allPositions.reduce((previous, pos) => {
-        return previous.x < pos.x ? previous : pos;
-    }).x - 1;
-    maxX = allPositions.reduce((previous, pos) => {
-        return previous.x > pos.x ? previous : pos;
-    }).x + 1;
-    
+    minX =
+        allPositions.reduce((previous, pos) => {
+            return previous.x < pos.x ? previous : pos;
+        }).x - 1;
+    maxX =
+        allPositions.reduce((previous, pos) => {
+            return previous.x > pos.x ? previous : pos;
+        }).x + 1;
+
     minY = -1;
     maxY = kangarooPositions.C0.length; // both C0 and C1 have the same number of positions
 
@@ -163,6 +170,22 @@ function drawKangaroos() {
         ctx.lineTo(canvasX, canvasY);
     });
     ctx.stroke();
+}
+
+function showPositionsInTable() {
+    positionsList.innerHTML = "";
+
+    for (let t = 0; t < kangarooPositions.C0.length; t++) {
+        const li = document.createElement("li");
+        li.classList.add("simul__position");
+
+        li.innerHTML = `
+            <span>t = ${t}&Delta;t</span
+            ><span>x<sub>0</sub> = ${kangarooPositions.C0[t].x.toFixed(3)}</span><span>x<sub>1</sub> = ${kangarooPositions.C1[t].x}</span>
+        `;
+
+        positionsList.appendChild(li);
+    }
 }
 
 function axisToCanvas(coords: { x?: number; y?: number }) {

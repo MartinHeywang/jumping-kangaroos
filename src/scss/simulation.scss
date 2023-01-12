@@ -1,22 +1,50 @@
-.simulation {
+.simul {
     display: flex;
 
-    min-height: calc(100vh - 4rem);
+    height: calc(100vh - 4rem);
 }
 
-.simulation__graphic-wrapper {
+.simul__graphic-wrapper {
     flex: 1;
 }
 
-.simulation__graphic {
+.simul__graphic {
     // because otherwise, the canvas does not take the full height
     // but instead leaves a small bottom margin
     min-height: 100%;
 }
 
-.simulation__table {
+.simul__table {
     border-left: 2px solid #333;
     background-color: #d9d9d9;
 
     min-width: 20em;
+
+    padding: 1em;
+
+    overflow: scroll;
+    align-self: stretch;
+}
+
+.simul__positions-list {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+}
+
+.simul__position {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+
+    & > :first-child {
+        padding: .2em;
+        background-color: rgba(0, 0, 0, .2);
+        border-radius: .3em;
+    }
 }

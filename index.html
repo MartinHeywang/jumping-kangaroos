@@ -11,18 +11,33 @@
         <title>Jumping Kangaroos</title>
     </head>
     <body>
-        <section id="simulation" class="section simulation">
-            <div class="simulation__graphic-wrapper">
-                <canvas class="simulation__graphic"></canvas>
+        <section id="simul" class="section simul">
+            <div class="simul__graphic-wrapper">
+                <canvas class="simul__graphic"></canvas>
             </div>
-            <div class="simulation__table"></div>
+            <div class="simul__table">
+                <h2>Positions</h2>
+
+                <ul class="simul__positions-list">
+                    <li class="simul__position">
+                        <span>t = 1&Delta;t</span><span>x<sub>0</sub> = 0</span
+                        ><span>x<sub>1</sub> = 1</span>
+                    </li>
+                    <li class="simul__position">
+                        <span>t = 2&Delta;t</span><span>x<sub>0</sub> = 0</span
+                        ><span>x<sub>1</sub> = 1</span>
+                    </li>
+                </ul>
+            </div>
         </section>
-        <section id="configuration" class="section configuration">
-            <div class="configuration__status">
-                <div>Informations sur la simulation&nbsp;:</div>
-                <span>s = 2</span>
-                <span>&Delta;t = 1</span>
-                <span>x<sub>1</sub>[n] = 1 + n</span>
+        <section id="config" class="section config">
+            <div class="config__status">
+                <div class="config__status__title">État</div>
+
+                <div class="config__var" data-var="s">
+                    <div class="config__var-name">s&nbsp;=&nbsp;</div>
+                    <input class="config__var-input" type="text" />
+                </div>
             </div>
         </section>
     </body>
