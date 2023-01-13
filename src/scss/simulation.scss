@@ -14,37 +14,45 @@
     min-height: 100%;
 }
 
-.simul__table {
-    border-left: 2px solid #333;
+.simul__info {
+    width: 20rem;
+
     background-color: #d9d9d9;
-
-    min-width: 20em;
-
-    padding: 1em;
+    border-left: 3px solid #999;
+    box-shadow: -5px 0 0.3em rgba(black, 0.2);
 
     overflow: scroll;
-    align-self: stretch;
 }
 
-.simul__positions-list {
-    display: flex;
-    flex-direction: column;
-    gap: .5em;
+.simul__stop-message {
+    background-color: #222;
+    color :white;
+    padding: 1em;
+}
 
+.simul__positions {
+    padding: 0;
+    margin: 0;
     list-style: none;
 
-    margin: 0;
-    padding: 0;
+    font-family: Consolas, monospace;
+
+    border-bottom: 1px solid black;
 }
 
 .simul__position {
+    padding: 0.5em 1em;
     display: flex;
-    align-items: center;
-    gap: .5em;
+    justify-content: space-around;
+    gap: 1em;
 
-    & > :first-child {
-        padding: .2em;
-        background-color: rgba(0, 0, 0, .2);
-        border-radius: .3em;
-    }
+    border-top: 1px solid black;
+}
+
+.simul__position:nth-child(2n) {
+    background-color: rgba(black, 0.2);
+}
+
+.simul__position:last-child {
+    font-weight: bold;
 }
