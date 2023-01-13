@@ -6,11 +6,14 @@ interface State {
         C1: { x: number; y: number }[];
     };
     distances: { x: number; y: number }[];
+
+    stopMessage: string;
 }
 
 export let state: State = {
     positions: { C0: [{ x: 0, y: 0 }], C1: [{ x: 1, y: 0 }] },
     distances: [{ x: 1, y: 0 }],
+    stopMessage: "",
 };
 
 const defaultPositions = { C0: [{ x: 0, y: 0 }], C1: [{ x: 1, y: 0 }] };
@@ -45,10 +48,15 @@ function computeKangarooPositions() {
         const distance = { x: state.positions.C1[t].x - state.positions.C0[t].x, y: 0 };
         console.log(distance.x);
 
-        if(state.distances.some(dis => Math.abs(dis.x - distance.x) <= 0.01)) break;
+        if (state.distances.some(dis => Math.abs(dis.x - distance.x) <= 0.001))
+            return (state.stopMessage =
+                "Les kangourous se trouvaient déjà à la même distance l'un de l'autre (= cycle).");
 
         state.distances[t] = distance;
 
-        if(state.distances[t].x === 0) break;
+        if (state.distances[t].x === 0)
+            return (state.stopMessage = "Les kangourous se trouvaient au même endroit.");
     }
+
+    return (state.stopMessage = "On a atteint le nombre d'itération maximum.");
 }
