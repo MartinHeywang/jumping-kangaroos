@@ -1,4 +1,5 @@
 import { state } from "./state";
+import { config } from "./config";
 
 const canvas = document.querySelector<HTMLCanvasElement>(".simul__graphic")!;
 const ctx = canvas.getContext("2d")!;
@@ -14,17 +15,15 @@ export function render() {
 
     // adjust graph visible domain
     const allPositions = state.positions.C0.concat(state.positions.C1);
-    minX =
-        allPositions.reduce((previous, pos) => {
-            return previous.x < pos.x ? previous : pos;
-        }).x - 1;
-    maxX =
+    maxX = Math.ceil(
         allPositions.reduce((previous, pos) => {
             return previous.x > pos.x ? previous : pos;
-        }).x + 1;
-
-    minY = -1;
-    maxY = state.positions.C0.length; // both C0 and C1 have the same number of positions
+        }).x +
+            1
+    );
+    maxY = state.positions.C0.length * config.deltaT; // both C0 and C1 have the same number of positions
+    minX = Math.min(Math.round(maxX / 15), -1);
+    minY = Math.min(Math.round(minY / 15), -1);
 
     drawAxis();
     drawKangaroos();
@@ -105,7 +104,10 @@ function drawKangaroos() {
 
     ctx.beginPath();
     state.positions.C1.forEach((pos, t) => {
-        const { x: canvasX, y: canvasY } = axisToCanvas({ x: pos.x, y: t });
+        const { x: canvasX, y: canvasY } = axisToCanvas({
+            x: pos.x,
+            y: t * config.deltaT,
+        });
 
         ctx.arc(canvasX, canvasY, pointRadius, 0, Math.PI * 2);
     });
@@ -115,7 +117,10 @@ function drawKangaroos() {
     ctx.beginPath();
     ctx.strokeStyle = `rgba(${C1Color}, ${lineAlpha})`;
     state.positions.C1.forEach((pos, t) => {
-        const { x: canvasX, y: canvasY } = axisToCanvas({ x: pos.x, y: t });
+        const { x: canvasX, y: canvasY } = axisToCanvas({
+            x: pos.x,
+            y: t * config.deltaT,
+        });
         ctx.lineTo(canvasX, canvasY);
     });
     ctx.stroke();
@@ -123,7 +128,10 @@ function drawKangaroos() {
     ctx.fillStyle = `rgb(${C0Color})`;
     state.positions.C0.forEach((pos, t) => {
         ctx.beginPath();
-        const { x: canvasX, y: canvasY } = axisToCanvas({ x: pos.x, y: t });
+        const { x: canvasX, y: canvasY } = axisToCanvas({
+            x: pos.x,
+            y: t * config.deltaT,
+        });
         ctx.arc(canvasX, canvasY, pointRadius, 0, Math.PI * 2);
         ctx.fill();
     });
@@ -131,7 +139,10 @@ function drawKangaroos() {
     ctx.beginPath();
     ctx.strokeStyle = `rgba(${C0Color}, ${lineAlpha})`;
     state.positions.C0.forEach((pos, t) => {
-        const { x: canvasX, y: canvasY } = axisToCanvas({ x: pos.x, y: t });
+        const { x: canvasX, y: canvasY } = axisToCanvas({
+            x: pos.x,
+            y: t * config.deltaT,
+        });
         ctx.lineTo(canvasX, canvasY);
     });
     ctx.stroke();

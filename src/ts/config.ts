@@ -1,11 +1,12 @@
 interface Config {
     s: number;
+    deltaT: number;
 
     C1: (t: number) => number;
 }
 
 // default values
-export let config: Config = { s: 2, C1: t => 1 + t };
+export let config: Config = { s: 2, deltaT: 1, C1: t => 1 + t };
 
 type Listener = (config: Config) => void;
 const listeners: Listener[] = [];
@@ -51,6 +52,7 @@ const parseQuotient = (text: string) => {
 }
 
 setupVariable("s", ".config__var[data-var=s]", parseQuotient, v => v.toString(), 2);
+setupVariable("deltaT", ".config__var[data-var=deltaT]", parseFloat, v => v.toString(), 1);
 
 export function addListener(listener: Listener) {
     listeners.push(listener);
