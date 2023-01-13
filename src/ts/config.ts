@@ -18,10 +18,6 @@ export function setConfig(newConfig: Partial<Config>) {
     listeners.forEach(cb => cb(config));
 }
 
-// info: where you left off
-// create an option for a default value in setupVariable
-// to replace the html one
-
 function setupVariable<T extends keyof Config>(
     varName: T,
     varElementQuery: string,
@@ -43,7 +39,18 @@ function setupVariable<T extends keyof Config>(
     setConfig({ [varName]: defaultValue });
 }
 
-setupVariable("s", ".config__var[data-var=s]", parseFloat, v => v.toString(), 2);
+const parseQuotient = (text: string) => {
+    const split = text.split("/");
+    if (split.length === 1) return parseFloat(text);
+
+    return split.reduce((prev, current) => {
+        if (prev === Infinity) return parseFloat(current);
+
+        return prev / parseFloat(current);
+    }, Infinity);
+}
+
+setupVariable("s", ".config__var[data-var=s]", parseQuotient, v => v.toString(), 2);
 
 export function addListener(listener: Listener) {
     listeners.push(listener);
